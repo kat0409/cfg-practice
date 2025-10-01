@@ -1,6 +1,6 @@
 ﻿namespace WebApiApp.Models
 {
-    public class Employees
+    public class Assignments
     {
     }
 }
