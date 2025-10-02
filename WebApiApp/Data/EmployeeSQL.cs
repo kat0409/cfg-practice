@@ -3,8 +3,8 @@
     public class EmployeeSQL
     {
         public const string AddEmployee = @"
-            INSERT INTO Employees (Name, Ssn, HireDate, GradeLevel, Password, Username, PhoneNumber, Email, Address)
-            VALUES (@name, @ssn, @hireDate, @gradeLevel, @password, @username, @phoneNumber, @email, @address);";
+            INSERT INTO Employees (Name, Ssn, HireDate, GradeLevel, Password, Username, PhoneNumber, Email, Address, BirthDate)
+            VALUES (@name, @ssn, @hireDate, @gradeLevel, @password, @username, @phoneNumber, @email, @address, @birthDate);";
 
         public string AddToShiftSchedule = @"
             INSERT INTO ShiftSchedules (ShiftStart, ShiftEnd)
@@ -12,6 +12,8 @@
 
         public string AddToEmployeeSchedule = @"
             INSERT INTO EmployeeSchedules (Essn, ShiftID, AssignedAt)
-            VALUES (@essn, @shiftId, NOW());";
+            SELECT (@essn, @shiftId, NOW())
+            FROM ShiftSchedules s, Employees e
+            WHERE s.ShiftStart = @shiftStart AND s.ShiftEnd = @shiftEnd AND e.Name = @name AND e.BirthDate = birthDate;";
     }
 }

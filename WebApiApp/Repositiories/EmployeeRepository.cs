@@ -25,7 +25,7 @@ namespace WebApiApp.Repositiories
             _employeeSql = employeeSql;
         }
 
-        public async Task AddEmployee(string name, string ssn, DateOnly hireDate, GL gradeLevel, string password, string username, string phoneNum, string email, string address)
+        public async Task AddEmployee(string name, string ssn, DateOnly hireDate, GL gradeLevel, string password, string username, string phoneNum, string email, string address, DateOnly birthDate)
         {
             using var conn = new MySqlConnection(_connectionString);
             using var cmd = new MySqlCommand(EmployeeSQL.AddEmployee, conn);
@@ -39,6 +39,7 @@ namespace WebApiApp.Repositiories
             cmd.Parameters.AddWithValue("@phoneNum", phoneNum);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@address", address);
+            cmd.Parameters.AddWithValue("@birthDate", birthDate);
 
             await conn.OpenAsync();
             await cmd.ExecuteNonQueryAsync();
@@ -51,6 +52,20 @@ namespace WebApiApp.Repositiories
 
             cmd.Parameters.AddWithValue("@shiftStart", shiftStart);
             cmd.Parameters.AddWithValue("@shiftEnd", shiftEnd);
+
+            await conn.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task AddToEmployeeSchedules(DateTime shiftStart, DateTime shiftEnd, string name, DateOnly birthDate)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            using var cmd = new MySqlCommand(_employeeSql.AddToEmployeeSchedule, conn);
+
+            cmd.Parameters.AddWithValue("@shiftStart", shiftStart);
+            cmd.Parameters.AddWithValue("@shiftEnd", shiftEnd);
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@birthDate", birthDate);
 
             await conn.OpenAsync();
             await cmd.ExecuteNonQueryAsync();
