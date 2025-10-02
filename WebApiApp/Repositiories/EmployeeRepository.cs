@@ -70,5 +70,17 @@ namespace WebApiApp.Repositiories
             await conn.OpenAsync();
             await cmd.ExecuteNonQueryAsync();
         }
+
+        public async Task AddToEmployeeAttendance(string name, DateOnly birthDate)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            using var cmd = new MySqlCommand(_employeeSql.AddToEmployeeSchedule, conn);
+
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@birthDate", birthDate);
+
+            await conn.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+        }
     }
 }

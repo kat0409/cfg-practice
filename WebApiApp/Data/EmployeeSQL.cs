@@ -15,5 +15,11 @@
             SELECT (@essn, @shiftId, NOW())
             FROM ShiftSchedules s, Employees e
             WHERE s.ShiftStart = @shiftStart AND s.ShiftEnd = @shiftEnd AND e.Name = @name AND e.BirthDate = birthDate;";
+
+        public string AddEmployeeToAttencance = @"
+            INSERT INTO EmployeeAttendance (Essn, CurrentDate)
+            SELECT (@essn, CURDATE())
+            FROM Employees e
+            WHERE e.Name = @name AND e.BirthDate = @birthDate";
     }
 }
